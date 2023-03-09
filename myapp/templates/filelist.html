@@ -1,0 +1,113 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Files</title>
+
+    <!-- Google web fonts -->
+    <link href="http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700" rel='stylesheet' />
+
+    <!-- The main CSS file -->
+    <link href="{% static '/assets/css/style.css' %}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body style="background-color: #eee;">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">FileStorage</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        
+        <a class="btn btn-outline-success" href="/logout/">Logout<span class="sr-only">(current)</span></a>
+          {% comment %} <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form> {% endcomment %}
+        </div>
+      </nav>
+    {% if code != 0 %}
+    <h1 style="text-align: center;color: indianred;position: relative;top: 100px;font-size: 40px; ">Welcome to File Storage</h1>
+    <form id="upload" method="post" action="/upload/" enctype="multipart/form-data" style="width:19%;">
+        {% csrf_token %}
+        <div id="drop">
+            Drop Here
+            
+            <a style="position: relative;right: 11px;">Browse</a>
+            <input type="FILE" name="file" id="file"/>
+        </div>
+        
+        <ul>
+            <!-- The file uploads will be shown here -->
+        </ul>
+        <input style="margin-left: 74px;height:30px;width:70px;background-color:#007a96;color: white;" type="submit" >
+    </form>
+    <table class="styled-table" style="margin: auto;">
+        <thead>
+            <tr>
+                <th>FileName</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in list.Data %}
+            <tr>
+                <td>{{i.file_name}}</td>
+                <td>{{i.date}}</td>
+                <td>{{i.time}}</td>
+                <td> <a href="http://127.0.0.1:8000/api/download/{{i.id}}" type="application/octet-stream">Download</a></td>
+            </tr>
+            {% endfor %}
+            <!-- and so on... -->
+        </tbody>
+    </table>
+
+    <nav aria-label="..." style="text-align:center;width: 20%;margin: auto;">
+        <ul class="pagination">
+            {% comment %} <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li> {% endcomment %}
+            {% for i in page %}
+            <li class="page-item"><a class="page-link" href="/upload?page={{i}}">{{i}}</a></li>
+            {% endfor %}
+            {% comment %} <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li> {% endcomment %}
+        </ul>
+    </nav>
+    {% else %}
+    <h1>Session expire Please login again</h1>
+
+    {% endif %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="{% static '/assets/js/jquery.knob.js' %}"></script>
+    
+    <!-- jQuery File Upload Dependencies -->
+    <script src="{% static '/assets/js/jquery.ui.widget.js' %}"></script>
+    <script src="{% static '/assets/js/jquery.iframe-transport.js' %}"></script>
+    <!-- <script src="{% static '/assets/js/jquery.fileupload.js' %}"></script> -->
+    
+    <!-- Our main JS file -->
+    <script src="{% static '/assets/js/script.js' %}"></script>
+    
+    
+    <!-- Only used for the demos. Please ignore and remove. --> 
+    <script src="http://cdn.tutorialzine.com/misc/enhance/v1.js" async></script>
+    
+</body>
+</html>
