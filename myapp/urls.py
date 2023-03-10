@@ -6,6 +6,7 @@ urlpatterns = [
     path('upload/',views.upload),
     path('signup/',views.signUp),
     path('savedata/',views.saveData),
-    path('logout/',views.logout)
+    path('logout/',views.logout),
+    path('delete/<int:id>',views.deleteFile)
 
 ]

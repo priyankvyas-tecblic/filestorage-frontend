@@ -31,7 +31,7 @@
               <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
         </ul>
-        
+        <p style="color: #ffff;position: relative;top: 9px;right: 12px;">{{list.user}}</p>
         <a class="btn btn-outline-success" href="/logout/">Logout<span class="sr-only">(current)</span></a>
           {% comment %} <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -58,19 +58,24 @@
     <table class="styled-table" style="margin: auto;">
         <thead>
             <tr>
+                <th>Index</th>
                 <th>FileName</th>
                 <th>Date</th>
                 <th>Time</th>
                 <th>Link</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
             {% for i in list.Data %}
             <tr>
+                <td>{{forloop.counter|add:startindex}}</td>
                 <td>{{i.file_name}}</td>
                 <td>{{i.date}}</td>
                 <td>{{i.time}}</td>
+                
                 <td> <a href="http://127.0.0.1:8000/api/download/{{i.id}}" type="application/octet-stream">Download</a></td>
+                <td><a href="http://127.0.0.1:8001/delete/{{i.id}}">Delete</a></td>
             </tr>
             {% endfor %}
             <!-- and so on... -->
@@ -79,15 +84,23 @@
 
     <nav aria-label="..." style="text-align:center;width: 20%;margin: auto;">
         <ul class="pagination">
-            {% comment %} <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1">Previous</a>
-            </li> {% endcomment %}
-            {% for i in page %}
-            <li class="page-item"><a class="page-link" href="/upload?page={{i}}">{{i}}</a></li>
+            {% if currentPage|add:"-1" > 0 %}
+            <li class="page-item">
+                <a class="page-link" href="/upload?page={{ currentPage|add:"-1" }}" tabindex="-1">Previous</a>
+            </li> 
+            {% endif %}
+                       {% for i in page %}
+            <li class="page-item
+            {% if i == currentPage %}
+            active
+            {% endif %}
+            "><a class="page-link" href="/upload?page={{i}}">{{i}}</a></li>
             {% endfor %}
-            {% comment %} <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-            </li> {% endcomment %}
+            {% if totalpage != currentPage %}
+            <li class="page-item">
+                <a class="page-link" href="/upload?page={{currentPage|add:"1"}}">Next</a>
+            </li> 
+            {% endif %}
         </ul>
     </nav>
     {% else %}
